@@ -1,143 +1,143 @@
-<!doctype html>
-<html lang="en" data-theme="midnight">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="TrendForge AI by Nexora Dynamics — viral content ideas, scripts and trends for creators." />
-  <meta name="username" content="{{ session.get('username', '') }}" />
-  <meta name="email" content="{{ session.get('email', '') }}" />
-  <title>{% block title %}TrendForge AI{% endblock %}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}" />
-  {% block head %}{% endblock %}
-</head>
-<body>
-  <div id="app-root">
-    {% block content %}{% endblock %}
-  </div>
+{% extends "base.html" %}
+{% block title %}Dashboard · TrendForge AI{% endblock %}
 
-  <!-- Toast container -->
-  <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}" />
 
-  <!-- Settings Drawer -->
-  <aside id="settings-drawer" class="drawer" aria-hidden="true">
-    <div class="drawer-backdrop" data-close-drawer></div>
-    <div class="drawer-panel glass">
-      <header class="drawer-head">
-        <h3>Settings</h3>
-        <button class="icon-btn" data-close-drawer aria-label="Close">✕</button>
-      </header>
+<!-- PWA SUPPORT -->
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#0f0f0f">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% endblock %}
 
-      <section class="drawer-section">
-        <h4>Profile</h4>
-        <div class="profile-card">
-          <div class="avatar" id="profile-avatar">U</div>
-          <div>
-            <div class="profile-name" id="profile-name">User</div>
-            <div class="profile-email" id="profile-email">—</div>
-          </div>
-        </div>
-      </section>
+{% block content %}
+<div class="app-shell">
+  <!-- Left sidebar -->
+  <aside class="side glass" id="side">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-dot"></span> TrendForge</a>
 
-      <section class="drawer-section">
-        <h4>Theme</h4>
-        <div class="theme-grid">
-          <button class="theme-chip" data-theme="midnight"><span style="background:linear-gradient(135deg,#0b1020,#3b82f6)"></span>Midnight</button>
-          <button class="theme-chip" data-theme="aurora"><span style="background:linear-gradient(135deg,#0d1b2a,#73ffb8)"></span>Aurora</button>
-          <button class="theme-chip" data-theme="sunset"><span style="background:linear-gradient(135deg,#ff6b35,#e84393)"></span>Sunset</button>
-          <button class="theme-chip" data-theme="forest"><span style="background:linear-gradient(135deg,#1a3c2a,#a0c49d)"></span>Forest</button>
-          <button class="theme-chip" data-theme="paper"><span style="background:linear-gradient(135deg,#f5f3ee,#0d0d0d)"></span>Paper</button>
-        </div>
-      </section>
+    <nav class="side-nav">
+      <button class="side-link active" data-view="chat">💬 Chat</button>
+      <button class="side-link" data-view="ideas">💡 Ideas</button>
+      <button class="side-link" data-view="scripts">🎞 Scripts</button>
+      <button class="side-link" data-view="trends">🔥 Trends</button>
+      <button class="side-link" data-open-drawer>⚙ Settings</button>
+      <a class="side-link danger" href="{{ url_for('logout') }}">↩ Logout</a>
+    </nav>
 
-      <section class="drawer-section">
-        <h4>Actions</h4>
-        <div class="drawer-actions">
-          <button class="ghost-btn" id="open-share">Share TrendForge</button>
-          <button class="ghost-btn" id="open-rating">Rate the app</button>
-          <button class="ghost-btn" id="clear-history">Delete chat history</button>
-          {% if session.get('user_id') %}
-          <a class="ghost-btn danger" href="{{ url_for('logout') }}">Logout</a>
-          {% else %}
-          <a class="ghost-btn" href="{{ url_for('login_page') }}">Login</a>
-          {% endif %}
-        </div>
-      </section>
-
-      <section class="drawer-section">
-        <h4>About</h4>
-        <p class="muted small">TrendForge AI helps creators ride viral waves. Powered by Nexora Dynamics (ND).</p>
-      </section>
+    <div class="side-quote">
+      <p id="side-quote">"Show up daily. The algorithm rewards rhythm."</p>
     </div>
   </aside>
 
-  <!-- Share Modal -->
-  <div id="share-modal" class="modal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-modal></div>
-    <div class="modal-card glass">
-      <header class="modal-head">
-        <h3>Share TrendForge AI</h3>
-        <button class="icon-btn" data-close-modal aria-label="Close">✕</button>
+  <!-- Main -->
+  <main class="main">
+    <header class="topbar glass">
+      <button class="icon-btn only-mobile" id="toggle-side" aria-label="Menu">☰</button>
+      <div>
+        <div class="hello" id="hello-line">Hello there 👋</div>
+        <div class="muted small" id="hello-sub">Pick a mode and let's create.</div>
+      </div>
+      <div class="topbar-right">
+        <div class="mode-switch" role="tablist" aria-label="Reply mode">
+          <button data-mode="greeting" title="Quick greetings and small talk">Greeting</button>
+          <button data-mode="normal" class="active" title="Ideas, captions, summaries">Normal</button>
+          <button data-mode="main" title="Full scripts, deep research">Main</button>
+        </div>
+        <span class="status-pill" id="health-pill"><span class="dot"></span> checking…</span>
+        <button class="icon-btn" data-open-drawer aria-label="Settings">⚙</button>
+      </div>
+    </header>
+
+    <section class="chat-area">
+      <div class="chat-stream" id="chat-stream">
+        <div class="empty-state" id="empty-state">
+          <div class="orb"></div>
+          <h2 id="empty-greet">Hello, creator</h2>
+          <p class="muted">Try one of these to get going:</p>
+          <div class="chips">
+            <button class="chip" data-prefill="Give me 5 viral TikTok hooks for fitness creators">5 viral fitness hooks</button>
+            <button class="chip" data-prefill="Write a full 60-second YouTube Shorts script about morning routines">Shorts script · morning routines</button>
+            <button class="chip" data-prefill="Trending hashtags for Nigerian street comedy this week">Naija comedy hashtags</button>
+            <button class="chip" data-prefill="Summarize the top Instagram Reels trends">Summarize Reels trends</button>
+          </div>
+        </div>
+      </div>
+
+      <form class="composer glass" id="chat-form" autocomplete="off">
+        <button type="button" class="icon-btn" id="voice-btn" title="Voice input" aria-label="Voice">🎙</button>
+        <textarea id="chat-input" rows="1" placeholder="Ask TrendForge anything…"></textarea>
+        <button type="submit" class="primary-btn" id="send-btn">Send</button>
+      </form>
+    </section>
+
+    <!-- Comments wall -->
+    <section class="comments glass">
+      <header class="comments-head">
+        <h3>Creator Wall</h3>
+        <span class="muted small">What other creators are saying</span>
       </header>
-      <p class="muted">Help another creator discover TrendForge — it would mean a lot. Sharing is totally optional.</p>
-      <textarea id="share-caption" rows="3" class="input"></textarea>
-      <div class="share-grid">
-        <button data-share="copy">Copy link</button>
-        <button data-share="tiktok">TikTok</button>
-        <button data-share="instagram">Instagram</button>
-        <button data-share="facebook">Facebook</button>
-        <button data-share="x">X / Twitter</button>
-        <button data-share="whatsapp">WhatsApp</button>
-      </div>
-    </div>
-  </div>
+      <form id="comment-form" class="comment-form">
+        <input type="text" id="comment-input" maxlength="500" placeholder="Share something with other creators…" />
+        <button class="primary-btn" type="submit">Post</button>
+      </form>
+      <ul id="comment-list" class="comment-list"></ul>
+    </section>
+  </main>
 
-  <!-- Rating Modal -->
-  <div id="rating-modal" class="modal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-modal></div>
-    <div class="modal-card glass">
-      <header class="modal-head">
-        <h3>Enjoying TrendForge?</h3>
-        <button class="icon-btn" data-close-modal aria-label="Close">✕</button>
-      </header>
-      <p class="muted">If you have a moment, a kind rating helps us grow. It's optional — no pressure.</p>
-      <div class="stars" id="rating-stars">
-        <button data-star="1">★</button><button data-star="2">★</button><button data-star="3">★</button><button data-star="4">★</button><button data-star="5">★</button>
-      </div>
-      <div class="modal-actions">
-        <button class="ghost-btn" data-close-modal>Maybe later</button>
-        <button class="primary-btn" id="submit-rating">Submit</button>
-      </div>
-    </div>
-  </div>
+  <!-- Trends sidebar -->
+  <aside class="trends glass">
+    <header class="trends-head">
+      <h3>🔥 Live Trends</h3>
+      <button class="ghost-btn xs" id="refresh-trends">Refresh</button>
+    </header>
+    <div class="trend-cards" id="trend-cards"></div>
+  </aside>
+</div>
+{% endblock %}
 
-  <!-- Hourly Polite Share Prompt -->
-  <div id="hourly-share" class="modal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-modal></div>
-    <div class="modal-card glass small">
-      <header class="modal-head">
-        <h3>A small favour 💛</h3>
-        <button class="icon-btn" data-close-modal aria-label="Close">✕</button>
-      </header>
-      <p>If TrendForge has helped you today, would you kindly share it with another creator? Only if you'd like to — totally optional.</p>
-      <div class="modal-actions">
-        <button class="ghost-btn" data-close-modal>Not now</button>
-        <button class="primary-btn" id="hourly-share-open">Share</button>
-      </div>
-    </div>
-  </div>
+{% block scripts %}
+<script src="{{ url_for('static', filename='chat.js') }}"></script>
 
-  <footer class="app-footer">
-    <div class="footer-inner">
-      <span>Powered by <strong>Nexora Dynamics (ND)</strong> — Version 6.2 coming soon</span>
-      <span class="muted" id="footer-date"></span>
-    </div>
-  </footer>
+<!-- PWA SERVICE WORKER -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/static/service-worker.js')
+      .then(() => console.log("PWA Service Worker registered"))
+      .catch(err => console.log("SW registration failed", err));
+  });
+}
+</script>
 
-  <script src="{{ url_for('static', filename='api.js') }}"></script>
-  <script src="{{ url_for('static', filename='ui.js') }}"></script>
-  {% block scripts %}{% endblock %}
-</body>
-</html>
+<!-- INSTALL PROMPT HANDLER (SAFE ADDITION) -->
+<script>
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log("Install available");
+});
+
+// Function you can call from a button
+function installApp() {
+  if (!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+
+  deferredPrompt.userChoice.then((choice) => {
+    if (choice.outcome === "accepted") {
+      console.log("User installed app");
+    }
+    deferredPrompt = null;
+  });
+}
+</script>
+<div style="position: fixed; top: 15px; right: 15px; z-index: 9999;">
+  <button onclick="installApp()" class="primary-btn">
+    Install App
+  </button>
+</div>
+
+{% endblock %}
