@@ -36,7 +36,10 @@
   <div class="hero-inner">
     <span class="eyebrow">Nexora Dynamics · TrendForge AI</span>
     <h1 class="display">Ride the next viral wave <span class="grad">before it breaks.</span></h1>
-    <p class="lede" id="hero-greet">Welcome, creator. AI-powered ideas, hooks, and full scripts — tuned to what's trending right now.</p>
+    <p class="lede" id="hero-greet">
+      Welcome, creator. AI-powered ideas, hooks, and full scripts — tuned to what's trending right now.
+    </p>
+
     <div class="hero-cta">
       {% if session.get('user_id') %}
         <a class="primary-btn lg" href="{{ url_for('chat_page') }}">Open dashboard →</a>
@@ -45,8 +48,10 @@
         <a class="ghost-btn lg" href="{{ url_for('login_page') }}">I have an account</a>
       {% endif %}
     </div>
+
     <div class="hero-quote glass" id="quote-banner">
-      <span class="q-mark">"</span><span id="quote-text">Creators worldwide are using TrendForge to publish faster.</span>
+      <span class="q-mark">"</span>
+      <span id="quote-text">Creators worldwide are using TrendForge to publish faster.</span>
     </div>
   </div>
   <div class="hero-orb"></div>
@@ -54,47 +59,53 @@
 
 <section id="features" class="section">
   <h2 class="section-title">Built for serious creators</h2>
+
   <div class="feature-grid">
     <article class="feature glass">
       <div class="f-icon">⚡</div>
       <h3>Instant viral ideas</h3>
       <p>Type a vibe — get hooks, captions and angles tuned to TikTok, Reels and Shorts.</p>
     </article>
+
     <article class="feature glass">
       <div class="f-icon">🎬</div>
       <h3>Full scripts in seconds</h3>
       <p>Switch to Main mode for detailed, fact-backed scripts ready to record.</p>
     </article>
+
     <article class="feature glass">
       <div class="f-icon">📈</div>
       <h3>Live trend radar</h3>
-      <p>See <script>
-let deferredPrompt;
 
-window.addEventListener("beforeinstallprompt", (e) => {
-  // Prevent default mini-infobar
-  e.preventDefault();
-  deferredPrompt = e;
+      <!-- FIX: script moved OUTSIDE <p> -->
+      <script>
+        let deferredPrompt;
 
-  // OPTIONAL: show your own install button later
-  console.log("Install available");
-});
+        window.addEventListener("beforeinstallprompt", (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          console.log("Install available");
+        });
 
-// Function you can call from a button
-function installApp() {
-  if (!deferredPrompt) return;
+        function installApp() {
+          if (!deferredPrompt) return;
 
-  deferredPrompt.prompt();
+          deferredPrompt.prompt();
 
-  deferredPrompt.userChoice.then((choice) => {
-    if (choice.outcome === "accepted") {
-      console.log("User installed app");
-    }
-    deferredPrompt = null;
-  });
-}
-</script> niches, hooks and formats are popping right now in your region.</p>
+          deferredPrompt.userChoice.then((choice) => {
+            if (choice.outcome === "accepted") {
+              console.log("User installed app");
+            }
+            deferredPrompt = null;
+          });
+        }
+      </script>
+
+      <p>
+        See niches, hooks and formats are popping right now in your region.
+      </p>
     </article>
+
     <article class="feature glass">
       <div class="f-icon">🧠</div>
       <h3>Three smart modes</h3>
@@ -105,6 +116,7 @@ function installApp() {
 
 <section id="preview" class="section">
   <h2 class="section-title">A viral creator dashboard</h2>
+
   <div class="preview glass">
     <div class="preview-side">
       <div class="prev-row active">💬 Chat</div>
@@ -113,11 +125,13 @@ function installApp() {
       <div class="prev-row">🔥 Trends</div>
       <div class="prev-row">⚙ Settings</div>
     </div>
+
     <div class="preview-main">
       <div class="prev-bubble ai">Here are 5 hooks for your fitness niche…</div>
       <div class="prev-bubble user">give me TikTok hooks for fitness</div>
       <div class="prev-bubble ai typing"><span></span><span></span><span></span></div>
     </div>
+
     <div class="preview-trends">
       <div class="t-card">NPC livestreams 🔥</div>
       <div class="t-card">Street interviews 🎤</div>
@@ -128,6 +142,7 @@ function installApp() {
 
 <section id="quotes" class="section quotes-section">
   <h2 class="section-title">Loved by creators worldwide</h2>
+
   <div class="quotes-grid">
     <blockquote class="glass">"Consistency beats talent. TrendForge keeps me consistent." — Creator</blockquote>
     <blockquote class="glass">"The riches are in the niches — and the niches are in TrendForge." — Creator</blockquote>
