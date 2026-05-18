@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% block title %}TrendForge AI — Viral content, on demand{% endblock %}
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}" />{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}" />
+
+<!-- PWA SUPPORT -->
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#0f0f0f">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% endblock %}
 
 {% block content %}
 <header class="nav glass">
@@ -60,7 +68,32 @@
     <article class="feature glass">
       <div class="f-icon">📈</div>
       <h3>Live trend radar</h3>
-      <p>See what niches, hooks and formats are popping right now in your region.</p>
+      <p>See <script>
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  // Prevent default mini-infobar
+  e.preventDefault();
+  deferredPrompt = e;
+
+  // OPTIONAL: show your own install button later
+  console.log("Install available");
+});
+
+// Function you can call from a button
+function installApp() {
+  if (!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+
+  deferredPrompt.userChoice.then((choice) => {
+    if (choice.outcome === "accepted") {
+      console.log("User installed app");
+    }
+    deferredPrompt = null;
+  });
+}
+</script> niches, hooks and formats are popping right now in your region.</p>
     </article>
     <article class="feature glass">
       <div class="f-icon">🧠</div>
@@ -101,4 +134,16 @@
     <blockquote class="glass">"Post like nobody's watching. They will be." — Creator</blockquote>
   </div>
 </section>
+
+<!-- PWA SERVICE WORKER -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/static/service-worker.js')
+      .then(() => console.log("PWA Service Worker registered"))
+      .catch(err => console.log("SW registration failed", err));
+  });
+}
+</script>
+
 {% endblock %}
